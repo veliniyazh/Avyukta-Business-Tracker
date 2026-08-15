@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avyukta Fashions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#FFFBF1;
+    --bg-panel:#FFFFFF;
+    --bg-panel-hi:#FBF5E6;
+    --cotton:#1E2A44;
+    --cotton-dim:#48506B;
+    --muted:#78809E;
+    --turmeric:#660559;
+    --madder:#B8452E;
+    --thread:#3F7A45;
+    --line:rgba(30,42,68,0.12);
+    --stripe: repeating-linear-gradient(90deg, var(--turmeric) 0px, var(--turmeric) 6px, var(--madder) 6px, var(--madder) 10px, var(--bg-deep) 10px, var(--bg-deep) 14px);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg-deep);
+    color:var(--cotton);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .stripe-bar{ height:5px; background:var(--stripe); }
+  header{
+    padding:22px 20px 16px;
+    max-width:1040px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  }
+  .brand h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:28px;
+    margin:0;
+    letter-spacing:0.2px;
+  }
+  .brand span{
+    color:var(--turmeric);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    border:1px solid var(--line);
+    padding:3px 8px;
+    border-radius:20px;
+  }
+  nav{
+    max-width:1040px;
+    margin:6px auto 0;
+    padding:0 20px;
+    display:flex;
+    gap:4px;
+    border-bottom:1px solid var(--line);
+  }
+  nav button{
+    background:none; border:none; color:var(--muted);
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px;
+    padding:12px 16px; cursor:pointer; position:relative; top:1px;
+    border-bottom:2px solid transparent;
+  }
+  nav button.active{ color:var(--cotton); border-bottom:2px solid var(--turmeric); }
+  main{ max-width:1040px; margin:0 auto; padding:20px; }
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:22px; }
+  .card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-top:3px solid var(--turmeric);
+    border-radius:8px;
+    padding:14px 16px;
+    box-shadow:0 1px 3px rgba(30,42,68,0.06);
+  }
+  .card.madder{ border-top-color:var(--madder); }
+  .card.thread{ border-top-color:var(--thread); }
+  .card .label{ font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:6px; }
+  .card .value{ font-family:'IBM Plex Mono',monospace; font-size:22px; font-weight:600; }
+  .card .value.small{ font-size:16px; }
+  .row{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+  .row h2{ font-family:'Fraunces',serif; font-size:19px; margin:0; font-weight:600; }
+  input[type=date]{
+    background:var(--bg-panel); border:1px solid var(--line); color:var(--cotton);
+    padding:8px 10px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-size:13px;
+  }
+  .btn{
+    background:var(--turmeric); color:#FFFFFF; border:none; padding:9px 16px;
+    border-radius:6px; font-weight:700; font-size:13px; cursor:pointer;
+  }
+  .btn.ghost{ background:none; border:1px solid var(--line); color:var(--cotton-dim); font-weight:600; }
+  .btn.small{ padding:5px 10px; font-size:12px; }
+  form.entry{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:10px;
+    padding:16px; margin-bottom:20px; display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px;
+    box-shadow:0 1px 3px rgba(30,42,68,0.06);
+  }
+  form.entry .full{ grid-column:1/-1; }
+  label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px; display:block; margin-bottom:4px; }
+  input,select,textarea{
+    width:100%; background:var(--bg-panel-hi); border:1px solid var(--line); color:var(--cotton);
+    padding:9px 10px; border-radius:6px; font-family:'Inter',sans-serif; font-size:14px;
+  }
+  textarea{ resize:vertical; min-height:38px; font-family:'Inter',sans-serif; }
+  input[type=file]{ padding:6px; font-size:12px; }
+  .img-preview{ margin-top:6px; display:flex; align-items:center; gap:8px; }
+  .img-preview img{ width:44px; height:44px; object-fit:cover; border-radius:6px; border:1px solid var(--line); }
+  .img-preview button{ background:none; border:none; color:var(--muted); font-size:11px; cursor:pointer; text-decoration:underline; }
+  form.entry .submit-row{ grid-column:1/-1; display:flex; justify-content:flex-end; gap:8px; }
+  #vendorOtherWrap{ display:none; }
+  table{ width:100%; border-collapse:collapse; font-size:13px; }
+  th{ text-align:left; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:0.6px; padding:8px 10px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  td{ padding:10px 10px; border-bottom:1px solid var(--line); font-family:'IBM Plex Mono',monospace; font-size:12.5px; }
+  td.name{ font-family:'Inter',sans-serif; font-size:13px; }
+  td.thumb img{ width:34px; height:34px; object-fit:cover; border-radius:5px; border:1px solid var(--line); display:block; }
+  td.thumb span{ color:var(--muted); font-size:11px; }
+  tr:hover td{ background:rgba(30,42,68,0.04); }
+  .tag{ padding:3px 8px; border-radius:20px; font-size:11px; font-weight:600; }
+  .tag.paid{ background:rgba(91,140,90,0.2); color:var(--thread); }
+  .tag.pending{ background:rgba(102,5,89,0.12); color:var(--turmeric); }
+  .tag.purchase{ background:rgba(193,80,46,0.18); color:var(--madder); }
+  .tag.repayment{ background:rgba(91,140,90,0.2); color:var(--thread); }
+  .tag.vendor-own{ background:rgba(91,140,90,0.2); color:var(--thread); }
+  .tag.vendor-other{ background:rgba(102,5,89,0.12); color:var(--turmeric); }
+  .tag.prepaid{ background:rgba(91,140,90,0.2); color:var(--thread); }
+  .tag.cod{ background:rgba(193,80,46,0.18); color:var(--madder); }
+  .empty{ color:var(--muted); font-size:13px; padding:24px 0; text-align:center; }
+  .del{ background:none; border:none; color:var(--muted); cursor:pointer; font-size:14px; }
+  .del:hover{ color:var(--madder); }
+  .supplier-block{ margin-top:24px; }
+  .supplier-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--line); font-size:13px; }
+  .supplier-row .bal{ font-family:'IBM Plex Mono',monospace; font-weight:600; }
+  .bal.owe{ color:var(--madder); }
+  .bal.clear{ color:var(--thread); }
+  footer{ text-align:center; color:var(--muted); font-size:12px; padding:30px 20px 40px; }
+  ::placeholder{ color:var(--muted); opacity:0.6; }
+</style>
+</head>
+<body>
+<div class="stripe-bar"></div>
+<header>
+  <div class="brand"><h1>Avyukta Fashions</h1><span>Handloom Trade Book</span></div>
+</header>
+<nav>
+  <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+  <button class="tab-btn" data-tab="orders">Orders</button>
+  <button class="tab-btn" data-tab="purchases">Purchases &amp; Repayments</button>
+  <button class="tab-btn" data-tab="suppliers">Suppliers</button>
+</nav>
+<main id="main">
+  <div class="empty">Loading your ledger…</div>
+</main>
+<footer>Data is saved privately to your account and stays between visits.</footer>
+
+<script>
+let orders = [];
+let transactions = [];
+let suppliers = []; // {id, name, opening}
+let activeTab = 'dashboard';
+let dashDate = new Date().toISOString().slice(0,10);
+let dashMode = 'day'; // day | all
+let loaded = false;
+let pendingImage = null; // base64 string for the order form currently being filled
+
+function uid(){ return 'id' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function fmt(n){ return '₹' + (Number(n)||0).toLocaleString('en-IN', {maximumFractionDigits:0}); }
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+
+function nextOrderNumber(){
+  let max = 0;
+  orders.forEach(o=>{
+    const m = String(o.orderNumber||'').match(/(\d+)$/);
+    if(m) max = Math.max(max, parseInt(m[1],10));
+  });
+  return 'ORD-' + String(max+1).padStart(4,'0');
+}
+
+async function loadData(){
+  try{
+    const o = await window.storage.get('orders-list', false);
+    orders = o ? JSON.parse(o.value) : [];
+  }catch(e){ orders = []; }
+  try{
+    const t = await window.storage.get('transactions-list', false);
+    transactions = t ? JSON.parse(t.value) : [];
+  }catch(e){ transactions = []; }
+  try{
+    const s = await window.storage.get('suppliers-list', false);
+    suppliers = s ? JSON.parse(s.value) : [];
+  }catch(e){ suppliers = []; }
+  loaded = true;
+  render();
+}
+
+async function saveOrders(){
+  try{ await window.storage.set('orders-list', JSON.stringify(orders), false); }
+  catch(e){ console.error('save orders failed', e); }
+}
+async function saveTransactions(){
+  try{ await window.storage.set('transactions-list', JSON.stringify(transactions), false); }
+  catch(e){ console.error('save transactions failed', e); }
+}
+async function saveSuppliers(){
+  try{ await window.storage.set('suppliers-list', JSON.stringify(suppliers), false); }
+  catch(e){ console.error('save suppliers failed', e); }
+}
+
+function supplierBalances(){
+  const map = {};
+  suppliers.forEach(s=>{ map[s.name] = Number(s.opening||0); });
+  transactions.forEach(t=>{
+    if(!(t.supplier in map)) map[t.supplier] = 0;
+    map[t.supplier] += t.type==='Purchase' ? Number(t.amount||0) : -Number(t.amount||0);
+  });
+  return map;
+}
+
+function switchTab(tab){
+  activeTab = tab;
+  pendingImage = null;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  render();
+}
+
+function render(){
+  const main = document.getElementById('main');
+  if(!loaded){ main.innerHTML = '<div class="empty">Loading your ledger…</div>'; return; }
+  if(activeTab==='dashboard') main.innerHTML = renderDashboard();
+  else if(activeTab==='orders') main.innerHTML = renderOrders();
+  else if(activeTab==='purchases') main.innerHTML = renderPurchases();
+  else main.innerHTML = renderSuppliers();
+  attachHandlers();
+}
+
+function renderDashboard(){
+  const dayOrders = dashMode==='day' ? orders.filter(o=>o.date===dashDate) : orders;
+  const dayTx = dashMode==='day' ? transactions.filter(t=>t.date===dashDate) : transactions;
+  const revenue = dayOrders.reduce((s,o)=>s+Number(o.selling||0),0);
+  const cost = dayOrders.reduce((s,o)=>s+Number(o.cost||0),0);
+  const profit = revenue - cost;
+  const purchaseSum = dayTx.filter(t=>t.type==='Purchase').reduce((s,t)=>s+Number(t.amount||0),0);
+  const repaySum = dayTx.filter(t=>t.type==='Repayment').reduce((s,t)=>s+Number(t.amount||0),0);
+
+  const supplierMap = supplierBalances();
+  const outstanding = Object.values(supplierMap).reduce((s,v)=>s+Math.max(v,0),0);
+
+  const supplierRows = Object.keys(supplierMap).sort().map(name=>{
+    const bal = supplierMap[name];
+    return `<div class="supplier-row"><span>${escapeHtml(name)}</span><span class="bal ${bal>0?'owe':'clear'}">${bal>0 ? 'Owe ' + fmt(bal) : 'Settled'}</span></div>`;
+  }).join('') || '<div class="empty">No suppliers logged yet.</div>';
+
+  return `
+    <div class="row">
+      <h2>${dashMode==='day' ? 'Daily summary' : 'All-time summary'}</h2>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn ghost small" id="modeToggle">${dashMode==='day' ? 'View all-time' : 'View by day'}</button>
+        ${dashMode==='day' ? `<input type="date" id="dashDateInput" value="${dashDate}">` : ''}
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card"><div class="label">Orders</div><div class="value">${dayOrders.length}</div></div>
+      <div class="card"><div class="label">Revenue</div><div class="value">${fmt(revenue)}</div></div>
+      <div class="card thread"><div class="label">Profit</div><div class="value">${fmt(profit)}</div></div>
+      <div class="card madder"><div class="label">Purchases</div><div class="value">${fmt(purchaseSum)}</div></div>
+      <div class="card thread"><div class="label">Repayments</div><div class="value">${fmt(repaySum)}</div></div>
+      <div class="card madder"><div class="label">Outstanding to suppliers</div><div class="value small">${fmt(outstanding)}</div></div>
+    </div>
+    <div class="supplier-block">
+      <div class="row"><h2>Supplier balances</h2></div>
+      ${supplierRows}
+    </div>
+  `;
+}
+
+function renderOrders(){
+  const sorted = [...orders].sort((a,b)=> b.date.localeCompare(a.date));
+  const rows = sorted.map(o=>{
+    const profit = Number(o.selling||0)-Number(o.cost||0);
+    const vendorTag = o.vendor==='Own Production'
+      ? `<span class="tag vendor-own">${escapeHtml(o.vendor)}</span>`
+      : `<span class="tag vendor-other">${escapeHtml(o.vendor||'—')}</span>`;
+    const paymentTag = o.paymentType==='Prepaid'
+      ? `<span class="tag prepaid">Prepaid</span>`
+      : `<span class="tag cod">COD</span>`;
+    return `<tr>
+      <td>${o.date}</td>
+      <td class="name">${escapeHtml(o.orderNumber)}</td>
+      <td class="thumb">${o.image ? `<img src="${o.image}" alt="saree">` : '<span>—</span>'}</td>
+      <td class="name">${escapeHtml(o.whatsapp)}</td>
+      <td class="name">${escapeHtml(o.address)}</td>
+      <td class="name">${escapeHtml(o.details)}</td>
+      <td>${fmt(o.selling)}</td>
+      <td>${fmt(o.cost)}</td>
+      <td>${fmt(profit)}</td>
+      <td>${paymentTag}</td>
+      <td>${vendorTag}</td>
+      <td><button class="del" data-del-order="${o.id}">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  return `
+    <div class="row"><h2>New order</h2></div>
+    <form class="entry" id="orderForm">
+      <div><label>Date</label><input type="date" name="date" value="${todayStr()}" required></div>
+      <div><label>Order number</label><input type="text" name="orderNumber" value="${nextOrderNumber()}" required></div>
+      <div><label>Customer WhatsApp</label><input type="text" name="whatsapp" placeholder="+91 XXXXX XXXXX" required></div>
+      <div class="full"><label>Customer address</label><textarea name="address" placeholder="Delivery address" required></textarea></div>
+      <div class="full">
+        <label>Saree image (optional)</label>
+        <input type="file" id="imageInput" accept="image/*">
+        <div class="img-preview" id="imgPreview" style="display:none;">
+          <img id="imgPreviewThumb" src="" alt="preview">
+          <button type="button" id="imgClear">Remove</button>
+        </div>
+      </div>
+      <div class="full"><label>Saree details</label><input type="text" name="details" placeholder="e.g. Indigo Ikat, 6m, cotton" required></div>
+      <div><label>Selling price (₹)</label><input type="number" name="selling" min="0" step="1" required></div>
+      <div><label>Saree cost (₹)</label><input type="number" name="cost" min="0" step="1" required></div>
+      <div><label>Order payment type</label>
+        <select name="paymentType"><option>Prepaid</option><option>Cash on Delivery</option></select>
+      </div>
+      <div>
+        <label>Vendor</label>
+        <select name="vendorSelect" id="vendorSelect">
+          <option>Own Production</option>
+          <option value="__other__">Other vendor…</option>
+        </select>
+      </div>
+      <div id="vendorOtherWrap"><label>Vendor name</label><input type="text" id="vendorOther" placeholder="Vendor name"></div>
+      <div class="submit-row"><button class="btn" type="submit">Add order</button></div>
+    </form>
+    <div class="row"><h2>Orders (${orders.length})</h2></div>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead><tr><th>Date</th><th>Order #</th><th>Image</th><th>WhatsApp</th><th>Address</th><th>Saree details</th><th>Selling</th><th>Cost</th><th>Profit</th><th>Payment</th><th>Vendor</th><th></th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="12" class="empty">No orders logged yet.</td></tr>'}</tbody>
+    </table>
+    </div>
+  `;
+}
+
+function renderPurchases(){
+  const sorted = [...transactions].sort((a,b)=> b.date.localeCompare(a.date));
+  const rows = sorted.map(t=>{
+    return `<tr>
+      <td>${t.date}</td>
+      <td class="name">${escapeHtml(t.supplier)}</td>
+      <td><span class="tag ${t.type==='Purchase'?'purchase':'repayment'}">${t.type}</span></td>
+      <td class="name">${t.type==='Repayment' ? escapeHtml(t.method||'—') : '—'}</td>
+      <td>${fmt(t.amount)}</td>
+      <td class="name">${escapeHtml(t.note||'')}</td>
+      <td><button class="del" data-del-tx="${t.id}">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  const supplierMap = supplierBalances();
+  const supplierRows = Object.keys(supplierMap).sort().map(name=>{
+    const bal = supplierMap[name];
+    return `<div class="supplier-row"><span>${escapeHtml(name)}</span><span class="bal ${bal>0?'owe':'clear'}">${bal>0 ? 'Owe ' + fmt(bal) : 'Settled'}</span></div>`;
+  }).join('') || '<div class="empty">No suppliers logged yet.</div>';
+
+  return `
+    <div class="row"><h2>New purchase or repayment</h2></div>
+    <form class="entry" id="txForm">
+      <div><label>Date</label><input type="date" name="date" value="${todayStr()}" required></div>
+      <div><label>Supplier</label><input type="text" name="supplier" list="supplierList" placeholder="Supplier name" required>
+        <datalist id="supplierList">${suppliers.map(s=>`<option value="${escapeHtml(s.name)}">`).join('')}</datalist>
+      </div>
+      <div><label>Type</label>
+        <select name="type" id="txType"><option>Purchase</option><option>Repayment</option></select>
+      </div>
+      <div id="methodWrap" style="display:none;">
+        <label>Payment method</label>
+        <select name="methodSelect" id="methodSelect">
+          <option>Cash</option>
+          <option>UPI</option>
+          <option>Bank Transfer</option>
+          <option>Cheque</option>
+          <option value="__other__">Other…</option>
+        </select>
+      </div>
+      <div id="methodOtherWrap" style="display:none;"><label>Method name</label><input type="text" id="methodOther" placeholder="Payment method"></div>
+      <div><label>Amount (₹)</label><input type="number" name="amount" min="0" step="1" required></div>
+      <div class="full"><label>Note</label><input type="text" name="note" placeholder="e.g. 20 sarees, raw material advance"></div>
+      <div class="submit-row"><button class="btn" type="submit">Add entry</button></div>
+    </form>
+    <div class="row"><h2>Ledger (${transactions.length})</h2></div>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead><tr><th>Date</th><th>Supplier</th><th>Type</th><th>Method</th><th>Amount</th><th>Note</th><th></th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="7" class="empty">No purchases or repayments logged yet.</td></tr>'}</tbody>
+    </table>
+    </div>
+    <div class="supplier-block">
+      <div class="row"><h2>Balance per supplier</h2></div>
+      ${supplierRows}
+    </div>
+  `;
+}
+
+function renderSuppliers(){
+  const map = supplierBalances();
+  const rows = [...suppliers].sort((a,b)=> a.name.localeCompare(b.name)).map(s=>{
+    const bal = map[s.name] || 0;
+    return `<tr>
+      <td class="name">${escapeHtml(s.name)}</td>
+      <td>${fmt(s.opening||0)}</td>
+      <td class="${bal>0?'':''}"><span class="bal ${bal>0?'owe':'clear'}">${bal>0 ? 'Owe ' + fmt(bal) : 'Settled ' + fmt(bal)}</span></td>
+      <td><button class="del" data-del-supplier="${s.id}">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  return `
+    <div class="row"><h2>Add supplier</h2></div>
+    <form class="entry" id="supplierForm">
+      <div><label>Supplier name</label><input type="text" name="name" placeholder="Supplier name" required></div>
+      <div><label>Opening balance (₹, if any)</label><input type="number" name="opening" min="0" step="1" value="0"></div>
+      <div class="submit-row"><button class="btn" type="submit">Add supplier</button></div>
+    </form>
+    <div class="row"><h2>Suppliers (${suppliers.length})</h2></div>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead><tr><th>Name</th><th>Opening balance</th><th>Current balance</th><th></th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="4" class="empty">No suppliers added yet.</td></tr>'}</tbody>
+    </table>
+    </div>
+    <div class="empty" style="text-align:left; padding-top:6px;">Removing a supplier here only removes it from this list and the dropdown — their past purchase/repayment entries stay in the ledger.</div>
+  `;
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str||'';
+  return d.innerHTML;
+}
+
+function resizeImage(file, maxDim, cb){
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      let w = img.width, h = img.height;
+      if(w > h && w > maxDim){ h = Math.round(h*maxDim/w); w = maxDim; }
+      else if(h > maxDim){ w = Math.round(w*maxDim/h); h = maxDim; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      cb(canvas.toDataURL('image/jpeg', 0.7));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function attachHandlers(){
+  document.querySelectorAll('.tab-btn').forEach(b=> b.onclick = ()=> switchTab(b.dataset.tab));
+
+  const modeToggle = document.getElementById('modeToggle');
+  if(modeToggle) modeToggle.onclick = ()=>{ dashMode = dashMode==='day' ? 'all' : 'day'; render(); };
+
+  const dashDateInput = document.getElementById('dashDateInput');
+  if(dashDateInput) dashDateInput.onchange = (e)=>{ dashDate = e.target.value; render(); };
+
+  const vendorSelect = document.getElementById('vendorSelect');
+  const vendorOtherWrap = document.getElementById('vendorOtherWrap');
+  if(vendorSelect) vendorSelect.onchange = ()=>{
+    vendorOtherWrap.style.display = vendorSelect.value==='__other__' ? 'block' : 'none';
+  };
+
+  const txType = document.getElementById('txType');
+  const methodWrap = document.getElementById('methodWrap');
+  const methodSelect = document.getElementById('methodSelect');
+  const methodOtherWrap = document.getElementById('methodOtherWrap');
+  if(txType) txType.onchange = ()=>{
+    methodWrap.style.display = txType.value==='Repayment' ? 'block' : 'none';
+    if(txType.value!=='Repayment') methodOtherWrap.style.display = 'none';
+  };
+  if(methodSelect) methodSelect.onchange = ()=>{
+    methodOtherWrap.style.display = methodSelect.value==='__other__' ? 'block' : 'none';
+  };
+
+  const imageInput = document.getElementById('imageInput');
+  const imgPreview = document.getElementById('imgPreview');
+  const imgPreviewThumb = document.getElementById('imgPreviewThumb');
+  const imgClear = document.getElementById('imgClear');
+  if(imageInput) imageInput.onchange = ()=>{
+    const file = imageInput.files[0];
+    if(!file) return;
+    resizeImage(file, 400, (dataUrl)=>{
+      pendingImage = dataUrl;
+      imgPreviewThumb.src = dataUrl;
+      imgPreview.style.display = 'flex';
+    });
+  };
+  if(imgClear) imgClear.onclick = ()=>{
+    pendingImage = null;
+    imageInput.value = '';
+    imgPreview.style.display = 'none';
+  };
+
+  const orderForm = document.getElementById('orderForm');
+  if(orderForm) orderForm.onsubmit = async (e)=>{
+    e.preventDefault();
+    const f = new FormData(orderForm);
+    const vendorSel = f.get('vendorSelect');
+    const vendor = vendorSel==='__other__' ? (document.getElementById('vendorOther').value || 'Other vendor') : vendorSel;
+    orders.push({
+      id: uid(),
+      date: f.get('date'),
+      orderNumber: f.get('orderNumber'),
+      whatsapp: f.get('whatsapp'),
+      address: f.get('address'),
+      image: pendingImage,
+      details: f.get('details'),
+      selling: f.get('selling'),
+      cost: f.get('cost'),
+      paymentType: f.get('paymentType'),
+      vendor: vendor
+    });
+    pendingImage = null;
+    await saveOrders();
+    render();
+  };
+
+  const txForm = document.getElementById('txForm');
+  if(txForm) txForm.onsubmit = async (e)=>{
+    e.preventDefault();
+    const f = new FormData(txForm);
+    const type = f.get('type');
+    let method = '';
+    if(type==='Repayment'){
+      const methodSel = document.getElementById('methodSelect').value;
+      method = methodSel==='__other__' ? (document.getElementById('methodOther').value || 'Other') : methodSel;
+    }
+    transactions.push({
+      id: uid(),
+      date: f.get('date'),
+      supplier: f.get('supplier'),
+      type: type,
+      method: method,
+      amount: f.get('amount'),
+      note: f.get('note')
+    });
+    await saveTransactions();
+    render();
+  };
+
+  document.querySelectorAll('[data-del-order]').forEach(btn=>{
+    btn.onclick = async ()=>{
+      orders = orders.filter(o=>o.id!==btn.dataset.delOrder);
+      await saveOrders();
+      render();
+    };
+  });
+  document.querySelectorAll('[data-del-tx]').forEach(btn=>{
+    btn.onclick = async ()=>{
+      transactions = transactions.filter(t=>t.id!==btn.dataset.delTx);
+      await saveTransactions();
+      render();
+    };
+  });
+
+  const supplierForm = document.getElementById('supplierForm');
+  if(supplierForm) supplierForm.onsubmit = async (e)=>{
+    e.preventDefault();
+    const f = new FormData(supplierForm);
+    suppliers.push({ id: uid(), name: f.get('name'), opening: f.get('opening') });
+    await saveSuppliers();
+    render();
+  };
+  document.querySelectorAll('[data-del-supplier]').forEach(btn=>{
+    btn.onclick = async ()=>{
+      suppliers = suppliers.filter(s=>s.id!==btn.dataset.delSupplier);
+      await saveSuppliers();
+      render();
+    };
+  });
+}
+
+loadData();
+</script>
+</body>
+</html>
