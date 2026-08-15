@@ -1,1 +1,21 @@
-
+{
+  "name": "Avyukta Fashions",
+  "short_name": "Avyukta",
+  "description": "Avyukta Fashions Saree Ledger",
+  "start_url": "saree-ledger.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#660059",
+  "icons": [
+    {
+      "src": "avyukta-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "avyukta-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
