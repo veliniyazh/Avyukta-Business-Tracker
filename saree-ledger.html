@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avyukta Fashions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#FFFBF1;
+    --bg-panel:#FFFFFF;
+    --bg-panel-hi:#FBF5E6;
+    --cotton:#1E2A44;
+    --cotton-dim:#48506B;
+    --muted:#78809E;
+    --turmeric:#660559;
+    --madder:#B8452E;
+    --thread:#3F7A45;
+    --line:rgba(30,42,68,0.12);
+    --stripe: repeating-linear-gradient(90deg, var(--turmeric) 0px, var(--turmeric) 6px, var(--madder) 6px, var(--madder) 10px, var(--bg-deep) 10px, var(--bg-deep) 14px);
+  }
+  *{box-sizing:border-box;}
+  html,body{ max-width:100%; overflow-x:hidden; }
+  body{
+    margin:0;
+    background:var(--bg-deep);
+    color:var(--cotton);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .stripe-bar{ height:5px; background:var(--stripe); }
+  header{
+    padding:18px 16px 14px;
+    max-width:1040px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  }
+  .brand h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:24px;
+    margin:0;
+    letter-spacing:0.2px;
+  }
+  .brand span{
+    color:var(--turmeric);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    border:1px solid var(--line);
+    padding:3px 8px;
+    border-radius:20px;
+  }
+  nav{
+    max-width:1040px;
+    margin:6px auto 0;
+    padding:0 16px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:2px 4px;
+    border-bottom:1px solid var(--line);
+  }
+  nav button{
+    background:none; border:none; color:var(--muted);
+    font-family:'Inter',sans-serif; font-weight:600; font-size:13px;
+    padding:10px 10px; cursor:pointer; position:relative; top:1px;
+    border-bottom:2px solid transparent; white-space:nowrap;
+  }
+  nav button.active{ color:var(--cotton); border-bottom:2px solid var(--turmeric); }
+  main{ max-width:1040px; margin:0 auto; padding:16px; }
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-bottom:22px; }
+  .card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-top:3px solid var(--turmeric);
+    border-radius:8px;
+    padding:14px 14px;
+    box-shadow:0 1px 3px rgba(30,42,68,0.06);
+    min-width:0;
+  }
+  .card.madder{ border-top-color:var(--madder); }
+  .card.thread{ border-top-color:var(--thread); }
+  .card .label{ font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:6px; }
+  .card .value{ font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; word-break:break-word; }
+  .card .value.small{ font-size:15px; }
+  .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .row h2{ font-family:'Fraunces',serif; font-size:18px; margin:0; font-weight:600; }
+  input[type=date]{
+    background:var(--bg-panel); border:1px solid var(--line); color:var(--cotton);
+    padding:8px 10px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-size:13px;
+    max-width:100%;
+  }
+  .btn{
+    background:var(--turmeric); color:#FFFFFF; border:none; padding:9px 16px;
+    border-radius:6px; font-weight:700; font-size:13px; cursor:pointer;
+  }
+  .btn.ghost{ background:none; border:1px solid var(--line); color:var(--cotton-dim); font-weight:600; }
+  .btn.small{ padding:5px 10px; font-size:12px; }
+  .btn.full-w{ width:100%; }
+  form.entry{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:10px;
+    padding:14px; margin-bottom:20px; display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px;
+    box-shadow:0 1px 3px rgba(30,42,68,0.06);
+  }
+  form.entry .full{ grid-column:1/-1; }
+  label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px; display:block; margin-bottom:4px; }
+  input,select,textarea{
+    width:100%; background:var(--bg-panel-hi); border:1px solid var(--line); color:var(--cotton);
+    padding:9px 10px; border-radius:6px; font-family:'Inter',sans-serif; font-size:14px;
+  }
+  textarea{ resize:vertical; min-height:38px; font-family:'Inter',sans-serif; }
+  input[type=file]{ padding:6px; font-size:12px; }
+  .img-preview{ margin-top:6px; display:flex; align-items:center; gap:8px; }
+  .img-preview img{ width:44px; height:44px; object-fit:cover; border-radius:6px; border:1px solid var(--line); }
+  .img-preview button{ background:none; border:none; color:var(--muted); font-size:11px; cursor:pointer; text-decoration:underline; }
+  form.entry .submit-row{ grid-column:1/-1; display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; }
+  #vendorOtherWrap{ display:none; }
+
+  /* item blocks (multi-saree order form) */
+  .items-wrap{ grid-column:1/-1; display:flex; flex-direction:column; gap:10px; }
+  .item-block{ border:1px dashed var(--line); border-radius:8px; padding:12px; background:var(--bg-deep); display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:8px; }
+  .item-block-header{ grid-column:1/-1; display:flex; justify-content:space-between; align-items:center; }
+  .item-block-header .item-label{ font-family:'Fraunces',serif; font-size:14px; font-weight:600; color:var(--cotton-dim); text-transform:none; letter-spacing:0; }
+  .item-remove-btn{ background:none; border:none; color:var(--madder); font-size:12px; cursor:pointer; font-weight:600; }
+  .item-vendor-other-wrap{ display:none; }
+  .item-full{ grid-column:1/-1; }
+
+  /* card lists (orders / transactions / suppliers) */
+  .list-cards{ display:flex; flex-direction:column; gap:10px; }
+  .order-card, .tx-card, .supplier-card{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; box-shadow:0 1px 3px rgba(30,42,68,0.05); cursor:pointer; min-width:0;
+  }
+  .supplier-card{ cursor:default; }
+  .order-card-top, .tx-card-top, .supplier-card-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+  .order-card-num{ font-family:'Fraunces',serif; font-weight:600; font-size:15px; }
+  .order-card-date{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); margin-top:1px; }
+  .order-card-actions{ display:flex; gap:8px; align-items:center; }
+  .order-card-customer{ font-size:13px; margin-top:8px; color:var(--cotton-dim); }
+  .order-card-summary{ display:flex; justify-content:space-between; gap:8px; margin-top:10px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; flex-wrap:wrap; }
+  .thread-text{ color:var(--thread); font-weight:600; }
+  .madder-text{ color:var(--madder); font-weight:600; }
+
+  .tx-amount{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:15px; }
+  .tx-card-supplier{ font-size:14px; margin-top:8px; font-weight:600; }
+  .tx-card-meta{ display:flex; gap:12px; margin-top:6px; font-size:12px; color:var(--muted); font-family:'IBM Plex Mono',monospace; flex-wrap:wrap; }
+  .tx-card-note{ font-size:12.5px; color:var(--cotton-dim); margin-top:6px; }
+
+  .supplier-name{ font-weight:600; font-size:14px; }
+  .supplier-card-bal{ margin-top:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; }
+
+  .thumb-sm{ width:38px; height:38px; object-fit:cover; border-radius:6px; border:1px solid var(--line); flex-shrink:0; }
+
+  /* modal */
+  .modal-overlay{ position:fixed; inset:0; background:rgba(20,20,30,0.5); display:flex; align-items:flex-end; justify-content:center; z-index:50; padding:0; }
+  .modal-panel{ background:var(--bg-panel); width:100%; max-width:560px; max-height:88vh; overflow-y:auto; border-radius:16px 16px 0 0; padding:18px 16px 24px; box-shadow:0 -4px 24px rgba(0,0,0,0.2); }
+  @media (min-width:600px){
+    .modal-overlay{ align-items:center; padding:20px; }
+    .modal-panel{ border-radius:14px; max-height:85vh; }
+  }
+  .modal-header{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
+  .modal-title{ font-family:'Fraunces',serif; font-size:19px; font-weight:600; }
+  .modal-sub{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted); margin-top:2px; }
+  .modal-close{ background:var(--bg-panel-hi); border:none; width:30px; height:30px; border-radius:50%; font-size:14px; cursor:pointer; color:var(--cotton-dim); flex-shrink:0; }
+  .detail-row{ display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px solid var(--line); font-size:13.5px; }
+  .detail-label{ color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:0.6px; flex-shrink:0; }
+  .detail-row span:last-child{ text-align:right; }
+  .modal-items{ margin-top:14px; display:flex; flex-direction:column; gap:10px; }
+  .modal-item{ display:flex; gap:10px; border:1px solid var(--line); border-radius:8px; padding:10px; }
+  .modal-item img{ width:64px; height:64px; object-fit:cover; border-radius:6px; flex-shrink:0; }
+  .modal-item-info{ flex:1; min-width:0; }
+  .modal-item-details{ font-weight:600; font-size:13.5px; }
+  .modal-item-vendor{ margin-top:4px; }
+  .modal-item-nums{ display:flex; gap:10px; margin-top:6px; font-family:'IBM Plex Mono',monospace; font-size:12px; flex-wrap:wrap; }
+  .modal-totals{ margin-top:14px; border-top:1px solid var(--line); padding-top:10px; display:flex; flex-direction:column; gap:4px; font-size:13.5px; }
+  .modal-totals div{ display:flex; justify-content:space-between; }
+  .modal-footer{ margin-top:16px; display:flex; justify-content:flex-end; }
+
+  table{ width:100%; border-collapse:collapse; font-size:13px; }
+  th{ text-align:left; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:0.6px; padding:8px 10px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  td{ padding:10px 10px; border-bottom:1px solid var(--line); font-family:'IBM Plex Mono',monospace; font-size:12.5px; }
+  td.name{ font-family:'Inter',sans-serif; font-size:13px; }
+  tr:hover td{ background:rgba(30,42,68,0.04); }
+  .tag{ padding:3px 8px; border-radius:20px; font-size:11px; font-weight:600; display:inline-block; white-space:nowrap; }
+  .tag.paid{ background:rgba(91,140,90,0.2); color:var(--thread); }
+  .tag.pending{ background:rgba(102,5,89,0.12); color:var(--turmeric); }
+  .tag.purchase{ background:rgba(193,80,46,0.18); color:var(--madder); }
+  .tag.repayment{ background:rgba(91,140,90,0.2); color:var(--thread); }
+  .tag.vendor-own{ background:rgba(91,140,90,0.2); color:var(--thread); }
+  .tag.vendor-other{ background:rgba(102,5,89,0.12); color:var(--turmeric); }
+  .tag.prepaid{ background:rgba(91,140,90,0.2); color:var(--thread); }
+  .tag.cod{ background:rgba(193,80,46,0.18); color:var(--madder); }
+  .empty{ color:var(--muted); font-size:13px; padding:24px 0; text-align:center; }
+  .del{ background:none; border:none; color:var(--muted); cursor:pointer; font-size:14px; flex-shrink:0; }
+  .del:hover{ color:var(--madder); }
+  .supplier-block{ margin-top:24px; }
+  .supplier-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--line); font-size:13px; gap:8px; }
+  .supplier-row .bal{ font-family:'IBM Plex Mono',monospace; font-weight:600; flex-shrink:0; }
+  .bal.owe{ color:var(--madder); }
+  .bal.clear{ color:var(--thread); }
+  footer{ text-align:center; color:var(--muted); font-size:12px; padding:30px 16px 40px; }
+  ::placeholder{ color:var(--muted); opacity:0.6; }
+</style>
+</head>
+<body>
+<div class="stripe-bar"></div>
+<header>
+  <div class="brand"><h1>Avyukta Fashions</h1><span>Handloom Trade Book</span></div>
+</header>
+<nav>
+  <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+  <button class="tab-btn" data-tab="orders">Orders</button>
+  <button class="tab-btn" data-tab="purchases">Purchases &amp; Repayments</button>
+  <button class="tab-btn" data-tab="suppliers">Suppliers</button>
+</nav>
+<main id="main">
+  <div class="empty">Loading your ledger…</div>
+</main>
+<footer>Data is saved privately to your account and stays between visits.</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+// ---- Firebase setup ----
+// 1. Create a free project at https://console.firebase.google.com
+// 2. Enable "Firestore Database" (production mode) and add a Web App to get this config.
+// 3. Paste your config values below, replacing the placeholders.
+const firebaseConfig = {
+  apiKey: "AIzaSyAiFE8aQGx8G7m14cNGXgWwNjQfl5RL37k",
+  authDomain: "avyukta-fashions.firebaseapp.com",
+  projectId: "avyukta-fashions",
+  storageBucket: "avyukta-fashions.firebasestorage.app",
+  messagingSenderId: "829026937760",
+  appId: "1:829026937760:web:7d2fe113142a1ada3652c5",
+  measurementId: "G-7TDBYCRC7C"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ---- Business code gate ----
+// Enter the SAME code on all 3 phones so they all read/write the same data.
+let STORE_ID = localStorage.getItem('avyukta-store-id');
+if(!STORE_ID){
+  STORE_ID = (prompt('Enter your business code (use the same code on all your phones):') || 'default').trim().toLowerCase().replace(/[^a-z0-9]/g,'') || 'default';
+  localStorage.setItem('avyukta-store-id', STORE_ID);
+}
+
+let orders = [];
+let transactions = [];
+let suppliers = []; // {id, name, opening}
+let activeTab = 'dashboard';
+let dashDate = new Date().toISOString().slice(0,10);
+let dashMode = 'day'; // day | all
+let loaded = false;
+let selectedOrderId = null; // for detail modal
+
+// multi-item order draft state (reset each time the Orders form is rendered)
+let itemCounter = 0;
+let itemImages = {}; // idx -> base64 string
+
+function uid(){ return 'id' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function fmt(n){ return '₹' + (Number(n)||0).toLocaleString('en-IN', {maximumFractionDigits:0}); }
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+
+function nextOrderNumber(){
+  let max = 0;
+  orders.forEach(o=>{
+    const m = String(o.orderNumber||'').match(/(\d+)$/);
+    if(m) max = Math.max(max, parseInt(m[1],10));
+  });
+  return 'ORD-' + String(max+1).padStart(4,'0');
+}
+
+function orderTotals(o){
+  let selling=0, cost=0;
+  (o.items||[]).forEach(it=>{ selling += Number(it.selling||0); cost += Number(it.cost||0); });
+  return { selling, cost, profit: selling-cost };
+}
+
+async function loadData(){
+  try{
+    const orderDoc = await db.collection('avyukta-'+STORE_ID).doc('orders').get();
+    orders = orderDoc.exists ? (orderDoc.data().list || []) : [];
+  }catch(e){ orders = []; console.error('load orders failed', e); }
+  try{
+    const txDoc = await db.collection('avyukta-'+STORE_ID).doc('transactions').get();
+    transactions = txDoc.exists ? (txDoc.data().list || []) : [];
+  }catch(e){ transactions = []; console.error('load transactions failed', e); }
+  try{
+    const supDoc = await db.collection('avyukta-'+STORE_ID).doc('suppliers').get();
+    suppliers = supDoc.exists ? (supDoc.data().list || []) : [];
+  }catch(e){ suppliers = []; console.error('load suppliers failed', e); }
+  loaded = true;
+  render();
+  attachLiveSync();
+}
+
+function attachLiveSync(){
+  db.collection('avyukta-'+STORE_ID).doc('orders').onSnapshot(doc=>{
+    if(doc.exists){ orders = doc.data().list || []; render(); }
+  });
+  db.collection('avyukta-'+STORE_ID).doc('transactions').onSnapshot(doc=>{
+    if(doc.exists){ transactions = doc.data().list || []; render(); }
+  });
+  db.collection('avyukta-'+STORE_ID).doc('suppliers').onSnapshot(doc=>{
+    if(doc.exists){ suppliers = doc.data().list || []; render(); }
+  });
+}
+
+async function saveOrders(){
+  try{ await db.collection('avyukta-'+STORE_ID).doc('orders').set({list: orders}); }
+  catch(e){ console.error('save orders failed', e); }
+}
+async function saveTransactions(){
+  try{ await db.collection('avyukta-'+STORE_ID).doc('transactions').set({list: transactions}); }
+  catch(e){ console.error('save transactions failed', e); }
+}
+async function saveSuppliers(){
+  try{ await db.collection('avyukta-'+STORE_ID).doc('suppliers').set({list: suppliers}); }
+  catch(e){ console.error('save suppliers failed', e); }
+}
+
+function supplierBalances(){
+  const map = {};
+  suppliers.forEach(s=>{ map[s.name] = Number(s.opening||0); });
+  transactions.forEach(t=>{
+    if(!(t.supplier in map)) map[t.supplier] = 0;
+    map[t.supplier] += t.type==='Purchase' ? Number(t.amount||0) : -Number(t.amount||0);
+  });
+  return map;
+}
+
+function switchTab(tab){
+  activeTab = tab;
+  selectedOrderId = null;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  render();
+}
+
+function render(){
+  const main = document.getElementById('main');
+  if(!loaded){ main.innerHTML = '<div class="empty">Loading your ledger…</div>'; return; }
+  if(activeTab==='dashboard') main.innerHTML = renderDashboard();
+  else if(activeTab==='orders') main.innerHTML = renderOrders();
+  else if(activeTab==='purchases') main.innerHTML = renderPurchases();
+  else main.innerHTML = renderSuppliers();
+  attachHandlers();
+}
+
+function renderDashboard(){
+  const dayOrders = dashMode==='day' ? orders.filter(o=>o.date===dashDate) : orders;
+  const dayTx = dashMode==='day' ? transactions.filter(t=>t.date===dashDate) : transactions;
+  const revenue = dayOrders.reduce((s,o)=>s+orderTotals(o).selling,0);
+  const cost = dayOrders.reduce((s,o)=>s+orderTotals(o).cost,0);
+  const profit = revenue - cost;
+  const purchaseSum = dayTx.filter(t=>t.type==='Purchase').reduce((s,t)=>s+Number(t.amount||0),0);
+  const repaySum = dayTx.filter(t=>t.type==='Repayment').reduce((s,t)=>s+Number(t.amount||0),0);
+
+  const supplierMap = supplierBalances();
+  const outstanding = Object.values(supplierMap).reduce((s,v)=>s+Math.max(v,0),0);
+
+  const supplierRows = Object.keys(supplierMap).sort().map(name=>{
+    const bal = supplierMap[name];
+    return `<div class="supplier-row"><span>${escapeHtml(name)}</span><span class="bal ${bal>0?'owe':'clear'}">${bal>0 ? 'Owe ' + fmt(bal) : 'Settled'}</span></div>`;
+  }).join('') || '<div class="empty">No suppliers logged yet.</div>';
+
+  return `
+    <div class="row">
+      <h2>${dashMode==='day' ? 'Daily summary' : 'All-time summary'}</h2>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <button class="btn ghost small" id="modeToggle">${dashMode==='day' ? 'View all-time' : 'View by day'}</button>
+        ${dashMode==='day' ? `<input type="date" id="dashDateInput" value="${dashDate}">` : ''}
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card"><div class="label">Orders</div><div class="value">${dayOrders.length}</div></div>
+      <div class="card"><div class="label">Revenue</div><div class="value small">${fmt(revenue)}</div></div>
+      <div class="card thread"><div class="label">Profit</div><div class="value small">${fmt(profit)}</div></div>
+      <div class="card madder"><div class="label">Purchases</div><div class="value small">${fmt(purchaseSum)}</div></div>
+      <div class="card thread"><div class="label">Repayments</div><div class="value small">${fmt(repaySum)}</div></div>
+      <div class="card madder"><div class="label">Outstanding to suppliers</div><div class="value small">${fmt(outstanding)}</div></div>
+    </div>
+    <div class="supplier-block">
+      <div class="row"><h2>Supplier balances</h2></div>
+      ${supplierRows}
+    </div>
+  `;
+}
+
+function itemBlockHtml(idx){
+  return `
+    <div class="item-block" data-idx="${idx}">
+      <div class="item-block-header">
+        <span class="item-label">Saree ${idx+1}</span>
+        <button type="button" class="item-remove-btn" data-remove-item="${idx}">Remove</button>
+      </div>
+      <div class="item-full">
+        <label>Saree details</label>
+        <input type="text" class="item-details" placeholder="e.g. Indigo Ikat, 6m, cotton" required>
+      </div>
+      <div class="item-full">
+        <label>Saree image (optional)</label>
+        <input type="file" class="item-image-input" accept="image/*" data-idx="${idx}">
+        <div class="img-preview item-img-preview" data-idx="${idx}" style="display:none;">
+          <img class="item-img-thumb" src="" alt="preview">
+          <button type="button" class="item-img-clear" data-idx="${idx}">Remove image</button>
+        </div>
+      </div>
+      <div><label>Selling price (₹)</label><input type="number" class="item-selling" min="0" step="1" required></div>
+      <div><label>Saree cost (₹)</label><input type="number" class="item-cost" min="0" step="1" required></div>
+      <div>
+        <label>Vendor</label>
+        <select class="item-vendor-select" data-idx="${idx}">
+          <option>Own Production</option>
+          <option value="__other__">Other vendor…</option>
+        </select>
+      </div>
+      <div class="item-vendor-other-wrap item-full" data-idx="${idx}"><label>Vendor name</label><input type="text" class="item-vendor-other" placeholder="Vendor name"></div>
+    </div>
+  `;
+}
+
+function renderOrders(){
+  itemCounter = 1;
+  itemImages = {};
+  const sorted = [...orders].sort((a,b)=> b.date.localeCompare(a.date));
+  const cards = sorted.map(o=>{
+    const t = orderTotals(o);
+    const paymentTag = o.paymentType==='Prepaid'
+      ? `<span class="tag prepaid">Prepaid</span>`
+      : `<span class="tag cod">COD</span>`;
+    const itemCount = (o.items||[]).length;
+    return `<div class="order-card" data-open-order="${o.id}">
+      <div class="order-card-top">
+        <div>
+          <div class="order-card-num">${escapeHtml(o.orderNumber)}</div>
+          <div class="order-card-date">${o.date}</div>
+        </div>
+        <div class="order-card-actions">
+          ${paymentTag}
+          <button class="del" data-del-order="${o.id}">✕</button>
+        </div>
+      </div>
+      <div class="order-card-customer">${escapeHtml(o.whatsapp)}</div>
+      <div class="order-card-summary">
+        <span>${itemCount} saree${itemCount===1?'':'s'}</span>
+        <span>${fmt(t.selling)}</span>
+        <span class="thread-text">${fmt(t.profit)} profit</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  const modal = renderOrderModal();
+
+  return `
+    <div class="row"><h2>New order</h2></div>
+    <form class="entry" id="orderForm">
+      <div><label>Date</label><input type="date" name="date" value="${todayStr()}" required></div>
+      <div><label>Order number</label><input type="text" name="orderNumber" value="${nextOrderNumber()}" required></div>
+      <div><label>Customer WhatsApp</label><input type="text" name="whatsapp" placeholder="+91 XXXXX XXXXX" required></div>
+      <div><label>Order payment type</label>
+        <select name="paymentType"><option>Prepaid</option><option>Cash on Delivery</option></select>
+      </div>
+      <div class="full"><label>Customer address</label><textarea name="address" placeholder="Delivery address" required></textarea></div>
+
+      <div class="row full" style="margin:4px 0 0;"><h2 style="font-size:15px;">Sarees in this order</h2></div>
+      <div class="items-wrap" id="itemsContainer">
+        ${itemBlockHtml(0)}
+      </div>
+      <div class="full"><button type="button" class="btn ghost full-w" id="addItemBtn">+ Add another saree</button></div>
+
+      <div class="submit-row"><button class="btn" type="submit">Save order</button></div>
+    </form>
+    <div class="row"><h2>Orders (${orders.length})</h2></div>
+    <div class="list-cards">
+      ${cards || '<div class="empty">No orders logged yet.</div>'}
+    </div>
+    ${modal}
+  `;
+}
+
+function renderOrderModal(){
+  if(!selectedOrderId) return '';
+  const o = orders.find(x=>x.id===selectedOrderId);
+  if(!o) return '';
+  const t = orderTotals(o);
+  const paymentTag = o.paymentType==='Prepaid'
+    ? `<span class="tag prepaid">Prepaid</span>`
+    : `<span class="tag cod">COD</span>`;
+  const itemsHtml = (o.items||[]).map(it=>{
+    const vendorTag = it.vendor==='Own Production'
+      ? `<span class="tag vendor-own">${escapeHtml(it.vendor)}</span>`
+      : `<span class="tag vendor-other">${escapeHtml(it.vendor||'—')}</span>`;
+    const profit = Number(it.selling||0)-Number(it.cost||0);
+    return `<div class="modal-item">
+      ${it.image ? `<img src="${it.image}" alt="saree">` : ''}
+      <div class="modal-item-info">
+        <div class="modal-item-details">${escapeHtml(it.details)}</div>
+        <div class="modal-item-vendor">${vendorTag}</div>
+        <div class="modal-item-nums">
+          <span>Sell ${fmt(it.selling)}</span>
+          <span>Cost ${fmt(it.cost)}</span>
+          <span class="thread-text">Profit ${fmt(profit)}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="modal-overlay" id="orderModalOverlay">
+      <div class="modal-panel" id="orderModalPanel">
+        <div class="modal-header">
+          <div>
+            <div class="modal-title">${escapeHtml(o.orderNumber)}</div>
+            <div class="modal-sub">${o.date}</div>
+          </div>
+          <button class="modal-close" id="modalCloseBtn">✕</button>
+        </div>
+        <div class="detail-row"><span class="detail-label">WhatsApp</span><span>${escapeHtml(o.whatsapp)}</span></div>
+        <div class="detail-row"><span class="detail-label">Address</span><span>${escapeHtml(o.address)}</span></div>
+        <div class="detail-row"><span class="detail-label">Payment</span><span>${paymentTag}</span></div>
+        <div class="modal-items">${itemsHtml}</div>
+        <div class="modal-totals">
+          <div><span>Total selling</span><b>${fmt(t.selling)}</b></div>
+          <div><span>Total cost</span><b>${fmt(t.cost)}</b></div>
+          <div><span>Total profit</span><b>${fmt(t.profit)}</b></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn ghost small" data-del-order="${o.id}">Delete order</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPurchases(){
+  const sorted = [...transactions].sort((a,b)=> b.date.localeCompare(a.date));
+  const cards = sorted.map(t=>{
+    return `<div class="tx-card">
+      <div class="tx-card-top">
+        <span class="tag ${t.type==='Purchase'?'purchase':'repayment'}">${t.type}</span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="tx-amount">${fmt(t.amount)}</span>
+          <button class="del" data-del-tx="${t.id}">✕</button>
+        </div>
+      </div>
+      <div class="tx-card-supplier">${escapeHtml(t.supplier)}</div>
+      <div class="tx-card-meta"><span>${t.date}</span>${t.type==='Repayment' && t.method ? `<span>${escapeHtml(t.method)}</span>`:''}</div>
+      ${t.note ? `<div class="tx-card-note">${escapeHtml(t.note)}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  const supplierMap = supplierBalances();
+  const supplierRows = Object.keys(supplierMap).sort().map(name=>{
+    const bal = supplierMap[name];
+    return `<div class="supplier-row"><span>${escapeHtml(name)}</span><span class="bal ${bal>0?'owe':'clear'}">${bal>0 ? 'Owe ' + fmt(bal) : 'Settled'}</span></div>`;
+  }).join('') || '<div class="empty">No suppliers logged yet.</div>';
+
+  return `
+    <div class="row"><h2>New purchase or repayment</h2></div>
+    <form class="entry" id="txForm">
+      <div><label>Date</label><input type="date" name="date" value="${todayStr()}" required></div>
+      <div><label>Supplier</label><input type="text" name="supplier" list="supplierList" placeholder="Supplier name" required>
+        <datalist id="supplierList">${suppliers.map(s=>`<option value="${escapeHtml(s.name)}">`).join('')}</datalist>
+      </div>
+      <div><label>Type</label>
+        <select name="type" id="txType"><option>Purchase</option><option>Repayment</option></select>
+      </div>
+      <div id="methodWrap" style="display:none;">
+        <label>Payment method</label>
+        <select name="methodSelect" id="methodSelect">
+          <option>Cash</option>
+          <option>UPI</option>
+          <option>Bank Transfer</option>
+          <option>Cheque</option>
+          <option value="__other__">Other…</option>
+        </select>
+      </div>
+      <div id="methodOtherWrap" style="display:none;"><label>Method name</label><input type="text" id="methodOther" placeholder="Payment method"></div>
+      <div><label>Amount (₹)</label><input type="number" name="amount" min="0" step="1" required></div>
+      <div class="full"><label>Note</label><input type="text" name="note" placeholder="e.g. 20 sarees, raw material advance"></div>
+      <div class="submit-row"><button class="btn" type="submit">Add entry</button></div>
+    </form>
+    <div class="row"><h2>Ledger (${transactions.length})</h2></div>
+    <div class="list-cards">
+      ${cards || '<div class="empty">No purchases or repayments logged yet.</div>'}
+    </div>
+    <div class="supplier-block">
+      <div class="row"><h2>Balance per supplier</h2></div>
+      ${supplierRows}
+    </div>
+  `;
+}
+
+function renderSuppliers(){
+  const map = supplierBalances();
+  const cards = [...suppliers].sort((a,b)=> a.name.localeCompare(b.name)).map(s=>{
+    const bal = map[s.name] || 0;
+    return `<div class="supplier-card">
+      <div class="supplier-card-top">
+        <span class="supplier-name">${escapeHtml(s.name)}</span>
+        <button class="del" data-del-supplier="${s.id}">✕</button>
+      </div>
+      <div class="supplier-card-bal">
+        <span class="bal ${bal>0?'owe':'clear'}">${bal>0 ? 'Owe ' + fmt(bal) : 'Settled ' + fmt(bal)}</span>
+        ${Number(s.opening||0)>0 ? `<span style="color:var(--muted); font-size:12px;">Opening ${fmt(s.opening)}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="row"><h2>Add supplier</h2></div>
+    <form class="entry" id="supplierForm">
+      <div><label>Supplier name</label><input type="text" name="name" placeholder="Supplier name" required></div>
+      <div><label>Opening balance (₹, if any)</label><input type="number" name="opening" min="0" step="1" value="0"></div>
+      <div class="submit-row"><button class="btn" type="submit">Add supplier</button></div>
+    </form>
+    <div class="row"><h2>Suppliers (${suppliers.length})</h2></div>
+    <div class="list-cards">
+      ${cards || '<div class="empty">No suppliers added yet.</div>'}
+    </div>
+    <div class="empty" style="text-align:left; padding-top:6px;">Removing a supplier here only removes it from this list and the dropdown — their past purchase/repayment entries stay in the ledger.</div>
+  `;
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str||'';
+  return d.innerHTML;
+}
+
+function resizeImage(file, maxDim, cb){
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      let w = img.width, h = img.height;
+      if(w > h && w > maxDim){ h = Math.round(h*maxDim/w); w = maxDim; }
+      else if(h > maxDim){ w = Math.round(w*maxDim/h); h = maxDim; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      cb(canvas.toDataURL('image/jpeg', 0.7));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function attachItemBlockHandlers(block){
+  const idx = block.dataset.idx;
+  const vendorSelect = block.querySelector('.item-vendor-select');
+  const vendorOtherWrap = block.querySelector('.item-vendor-other-wrap');
+  if(vendorSelect) vendorSelect.onchange = ()=>{
+    vendorOtherWrap.style.display = vendorSelect.value==='__other__' ? 'block' : 'none';
+  };
+  const imageInput = block.querySelector('.item-image-input');
+  const imgPreview = block.querySelector('.item-img-preview');
+  const imgThumb = block.querySelector('.item-img-thumb');
+  const imgClear = block.querySelector('.item-img-clear');
+  if(imageInput) imageInput.onchange = ()=>{
+    const file = imageInput.files[0];
+    if(!file) return;
+    resizeImage(file, 400, (dataUrl)=>{
+      itemImages[idx] = dataUrl;
+      imgThumb.src = dataUrl;
+      imgPreview.style.display = 'flex';
+    });
+  };
+  if(imgClear) imgClear.onclick = ()=>{
+    delete itemImages[idx];
+    imageInput.value = '';
+    imgPreview.style.display = 'none';
+  };
+  const removeBtn = block.querySelector('.item-remove-btn');
+  if(removeBtn) removeBtn.onclick = ()=>{
+    const container = document.getElementById('itemsContainer');
+    if(container.children.length <= 1) return; // keep at least one saree
+    delete itemImages[idx];
+    block.remove();
+  };
+}
+
+function attachHandlers(){
+  document.querySelectorAll('.tab-btn').forEach(b=> b.onclick = ()=> switchTab(b.dataset.tab));
+
+  const modeToggle = document.getElementById('modeToggle');
+  if(modeToggle) modeToggle.onclick = ()=>{ dashMode = dashMode==='day' ? 'all' : 'day'; render(); };
+
+  const dashDateInput = document.getElementById('dashDateInput');
+  if(dashDateInput) dashDateInput.onchange = (e)=>{ dashDate = e.target.value; render(); };
+
+  // order items
+  const itemsContainer = document.getElementById('itemsContainer');
+  if(itemsContainer){
+    itemsContainer.querySelectorAll('.item-block').forEach(attachItemBlockHandlers);
+  }
+  const addItemBtn = document.getElementById('addItemBtn');
+  if(addItemBtn) addItemBtn.onclick = ()=>{
+    itemCounter += 1;
+    const idx = itemCounter;
+    itemsContainer.insertAdjacentHTML('beforeend', itemBlockHtml(idx));
+    const block = itemsContainer.querySelector(`.item-block[data-idx="${idx}"]`);
+    attachItemBlockHandlers(block);
+  };
+
+  const orderForm = document.getElementById('orderForm');
+  if(orderForm) orderForm.onsubmit = async (e)=>{
+    e.preventDefault();
+    const f = new FormData(orderForm);
+    const items = [];
+    itemsContainer.querySelectorAll('.item-block').forEach(block=>{
+      const idx = block.dataset.idx;
+      const vendorSel = block.querySelector('.item-vendor-select').value;
+      const vendorOther = block.querySelector('.item-vendor-other');
+      const vendor = vendorSel==='__other__' ? ((vendorOther && vendorOther.value) || 'Other vendor') : vendorSel;
+      items.push({
+        id: uid(),
+        details: block.querySelector('.item-details').value,
+        image: itemImages[idx] || null,
+        selling: block.querySelector('.item-selling').value,
+        cost: block.querySelector('.item-cost').value,
+        vendor: vendor
+      });
+    });
+    orders.push({
+      id: uid(),
+      date: f.get('date'),
+      orderNumber: f.get('orderNumber'),
+      whatsapp: f.get('whatsapp'),
+      address: f.get('address'),
+      paymentType: f.get('paymentType'),
+      items: items
+    });
+    await saveOrders();
+    render();
+  };
+
+  // order cards -> open modal
+  document.querySelectorAll('[data-open-order]').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      if(e.target.closest('[data-del-order]')) return;
+      selectedOrderId = card.dataset.openOrder;
+      render();
+    });
+  });
+  const modalOverlay = document.getElementById('orderModalOverlay');
+  if(modalOverlay) modalOverlay.addEventListener('click', (e)=>{
+    if(e.target.id==='orderModalOverlay'){ selectedOrderId = null; render(); }
+  });
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+  if(modalCloseBtn) modalCloseBtn.onclick = ()=>{ selectedOrderId = null; render(); };
+
+  const txForm = document.getElementById('txForm');
+  if(txForm) txForm.onsubmit = async (e)=>{
+    e.preventDefault();
+    const f = new FormData(txForm);
+    const type = f.get('type');
+    let method = '';
+    if(type==='Repayment'){
+      const methodSel = document.getElementById('methodSelect').value;
+      method = methodSel==='__other__' ? (document.getElementById('methodOther').value || 'Other') : methodSel;
+    }
+    transactions.push({
+      id: uid(),
+      date: f.get('date'),
+      supplier: f.get('supplier'),
+      type: type,
+      method: method,
+      amount: f.get('amount'),
+      note: f.get('note')
+    });
+    await saveTransactions();
+    render();
+  };
+
+  const txType = document.getElementById('txType');
+  const methodWrap = document.getElementById('methodWrap');
+  const methodSelect = document.getElementById('methodSelect');
+  const methodOtherWrap = document.getElementById('methodOtherWrap');
+  if(txType) txType.onchange = ()=>{
+    methodWrap.style.display = txType.value==='Repayment' ? 'block' : 'none';
+    if(txType.value!=='Repayment') methodOtherWrap.style.display = 'none';
+  };
+  if(methodSelect) methodSelect.onchange = ()=>{
+    methodOtherWrap.style.display = methodSelect.value==='__other__' ? 'block' : 'none';
+  };
+
+  document.querySelectorAll('[data-del-order]').forEach(btn=>{
+    btn.onclick = async (e)=>{
+      e.stopPropagation();
+      orders = orders.filter(o=>o.id!==btn.dataset.delOrder);
+      selectedOrderId = null;
+      await saveOrders();
+      render();
+    };
+  });
+  document.querySelectorAll('[data-del-tx]').forEach(btn=>{
+    btn.onclick = async ()=>{
+      transactions = transactions.filter(t=>t.id!==btn.dataset.delTx);
+      await saveTransactions();
+      render();
+    };
+  });
+
+  const supplierForm = document.getElementById('supplierForm');
+  if(supplierForm) supplierForm.onsubmit = async (e)=>{
+    e.preventDefault();
+    const f = new FormData(supplierForm);
+    suppliers.push({ id: uid(), name: f.get('name'), opening: f.get('opening') });
+    await saveSuppliers();
+    render();
+  };
+  document.querySelectorAll('[data-del-supplier]').forEach(btn=>{
+    btn.onclick = async ()=>{
+      suppliers = suppliers.filter(s=>s.id!==btn.dataset.delSupplier);
+      await saveSuppliers();
+      render();
+    };
+  });
+}
+
+loadData();
+</script>
+</body>
+</html>
